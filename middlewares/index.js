@@ -1,3 +1,3 @@
-const usersMiddleware = require('./userDataValidation');
+const middlewares = require('./middlewares');
 
-module.exports = { usersMiddleware };
+module.exports = { middlewares };
