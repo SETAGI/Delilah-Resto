@@ -1,4 +1,4 @@
-const { sequelize } = require('../configs/db');
+const { sequelize } = require('../database/db');
 
 async function getAllProducts(req, res) {
 	const response = await sequelize.query('SELECT * FROM products', { type: sequelize.QueryTypes.SELECT });
@@ -17,7 +17,7 @@ async function createProduct(req, res) {
 		});
 
 		const response = await sequelize.query(
-			'SELECT * FROM products WHERE id_product=(SELECT max(id_product) FROM products)',
+			'SELECT * FROM products WHERE product_id=(SELECT max(product_id) FROM products)',
 			{
 				type: sequelize.QueryTypes.SELECT,
 			}
@@ -30,4 +30,19 @@ async function createProduct(req, res) {
 	}
 }
 
-module.exports = { getAllProducts, createProduct };
+async function getProduct(req, res) {
+	try {
+		let product_id = await req.params.id;
+
+		const response = await sequelize.query('SELECT * FROM products WHERE product_id = ?', {
+			replacements: [product_id],
+			type: sequelize.QueryTypes.SELECT,
+		});
+
+		res.status(200).json({ ok: true, message: 'Successful request', data: response[0] });
+	} catch (err) {
+		console.error(err);
+	}
+}
+
+module.exports = { getAllProducts, createProduct, getProduct };
