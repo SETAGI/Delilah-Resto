@@ -26,6 +26,7 @@ async function createUser(req, res) {
 }
 
 async function jwtGeneration(req, res) {
+	/* eliminar los try catch de donde no se necesitan  */
 	try {
 		const userData = req.body;
 		const token = jwt.sign(userData, key);
@@ -67,7 +68,6 @@ async function editUser(req, res) {
 			type: sequelize.QueryTypes.SELECT,
 		});
 
-		/* METER ESTO EN UN MIDDLEWARE APARTE "ESTA VALIDACIÓN ->" */
 		if (username || full_name || email || phone || shipping_address || password || es_admin) {
 			Object.assign(response[0], req.body);
 			const { username, full_name, email, phone, shipping_address, password, es_admin } = response[0];
@@ -77,11 +77,20 @@ async function editUser(req, res) {
 				{ replacements: [username, full_name, email, phone, shipping_address, password, es_admin, user_id] }
 			);
 			res.status(200).json({ ok: true, message: 'Successful request', data: response[0] });
-			/* VALIDAR SI NECESITO LOS TRY CATCH O PUEDO ELIMINARLOS DE ALGUN LADO */
-		} else res.json({ ok: false, message: 'Missing data' });
+		} else res.status(400).json({ ok: false, message: 'Error, missing data' });
 	} catch (err) {
 		console.error(err);
 	}
 }
 
-module.exports = { createUser, jwtGeneration, getAllUsers, getUser, editUser };
+async function deleteUser(req, res) {
+	try {
+		const user_id = await req.params.id;
+		await sequelize.query('DELETE FROM users WHERE user_id = ?', { replacements: [user_id] });
+		res.status(200).json({ ok: true, message: 'User deleted' });
+	} catch (err) {
+		console.error(err);
+	}
+}
+
+module.exports = { createUser, jwtGeneration, getAllUsers, getUser, editUser, deleteUser };

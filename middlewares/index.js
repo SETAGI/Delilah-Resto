@@ -1,3 +1,3 @@
-const middlewares = require('./middlewares');
+const middle = require('./middlewares');
 
-module.exports = { middlewares };
+module.exports = { middle };
