@@ -1,6 +1,6 @@
 # Delilah Restó (Backend) 👨‍🍳
 
-##Technologies used:
+## Technologies used:
 
 - Node.js
 - Express
@@ -17,11 +17,13 @@ You can find the API documentation in the document `delilah.yml`, you need to co
 
 ## Instalation guide 💻
 
-####1. Download or clone the project
+#### 1. Download or clone the project
+
 Link to download: [Link](https://github.com/SETAGI/Delilah-Resto 'Link')
 Console option: `git clone https://github.com/SETAGI/Delilah-Resto.git`
 
-####2. installation of required packages
+#### 2. installation of required packages
+
 review how i can better manage this point
 
 `npm install`
