@@ -6,9 +6,7 @@ async function details(orders, orderId) {
 			const order_products = await sequelize.query(
 				`SELECT * FROM orders_products INNER JOIN products WHERE order_id = ${orderId} 
         AND orders_products.product_id = products.product_id`,
-				{
-					type: sequelize.QueryTypes.SELECT,
-				}
+				{ type: sequelize.QueryTypes.SELECT }
 			);
 			order.products = order_products;
 			return order;

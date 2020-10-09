@@ -12,7 +12,7 @@ CREATE TABLE users
   username VARCHAR (32) NOT NULL,
   full_name VARCHAR (32) NOT NULL,
   email VARCHAR (32) NOT NULL,
-  phone INT NOT NULL,
+  phone VARCHAR (32) NOT NULL,
   shipping_address VARCHAR (120) NOT NULL,
   password VARCHAR (32) NOT NULL,
   es_admin BOOLEAN DEFAULT FALSE,

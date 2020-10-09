@@ -1,0 +1,935 @@
+---
+openapi: '3.0.0'
+info:
+ title: 'Delilah Restó API'
+ description: "Dedicated api to describe the backend behavior of the Delilah Restó\
+  \ application"
+ version: '1.0.0'
+servers:
+ - url: 'https://virtserver.swaggerhub.com/SETAGI/DelilahRestoAPI/1.0.0'
+   description: 'SwaggerHub API Auto Mocking'
+ - url: 'https://localhost:3000'
+   description: 'Local Server'
+paths:
+ /register:
+  post:
+   tags:
+    - 'Customers'
+   summary: 'Create a new user'
+   description: 'Create a new user in database'
+   requestBody:
+    content:
+     application/json:
+      schema:
+       type: 'object'
+       properties:
+        username:
+         type: 'string'
+         example: 'sebas123'
+        full_name:
+         type: 'string'
+         example: 'Sebastian Tamayo'
+        email:
+         type: 'string'
+         example: 'sebastiantamayogiraldo@gmail.com'
+        phone:
+         type: 'number'
+         example: 3168547896
+        shipping_address:
+         type: 'string'
+         example: '2025 E Street, NW Washington DC'
+        password:
+         type: 'string'
+         example: 'password123'
+        es_admin:
+         type: 'boolean'
+         example: false
+    required: true
+   responses:
+    '201':
+     description: 'User created successfully'
+     content:
+      application/json:
+       schema:
+        type: 'object'
+        properties:
+         ok:
+          type: 'boolean'
+          example: true
+         message:
+          type: 'string'
+          example: 'User created successfully'
+         data:
+          $ref: '#/components/schemas/Users'
+    '400':
+     description: 'Missing data'
+     content:
+      application/json:
+       schema:
+        $ref: '#/components/schemas/400Error'
+    '401':
+     description: 'Previously registered user'
+     content:
+      application/json:
+       schema:
+        type: 'object'
+        properties:
+         ok:
+          type: 'boolean'
+          example: false
+         message:
+          type: 'string'
+          example: 'Error, Previously registered user'
+ /login:
+  post:
+   tags:
+    - 'Customers'
+   summary: 'Login a user to the system'
+   description: 'This login returns a JWT that is used for future logins'
+   requestBody:
+    content:
+     application/json:
+      schema:
+       type: 'object'
+       properties:
+        user_name:
+         type: 'string'
+         example: 'sebas123'
+        password:
+         type: 'string'
+         example: 'password123'
+    required: true
+   responses:
+    '200':
+     description: 'Logged successfully'
+     content:
+      application/json:
+       schema:
+        type: 'object'
+        properties:
+         ok:
+          type: 'boolean'
+          example: true
+         token:
+          type: 'string'
+          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyQWRtaW4iOiJBbGVqb0RXRlMiLCJwYXNzd29yZCI6MTIzNDU2LCJpYXQiOjE2MDAxMzY4MTksImV4cCI6MTYwMDIyMzIxOX0.kiOnKT1AoiFqSiPuM2TAh58rI-zYy9PMXrJ2RPwKH10'
+         message:
+          type: 'string'
+          example: 'Logged successfully'
+    '401':
+     description: 'Incorrect credentials'
+     content:
+      application/json:
+       schema:
+        type: 'object'
+        properties:
+         ok:
+          type: 'boolean'
+          example: false
+         message:
+          type: 'string'
+          example: 'Error, incorrect credentials'
+ /products:
+  get:
+   tags:
+    - 'Customers'
+   summary: 'Returns all available products'
+   description: 'Returns all available products in database'
+   responses:
+    '200':
+     description: 'Successful request'
+     content:
+      aplication/json:
+       schema:
+        type: 'object'
+        properties:
+         ok:
+          type: 'boolean'
+          example: true
+         message:
+          type: 'string'
+          example: 'Successful request'
+         data:
+          type: 'array'
+          items:
+           $ref: '#/components/schemas/Products'
+    '401':
+     description: 'Invalid Token'
+     content:
+      application/json:
+       schema:
+        type: 'object'
+        properties:
+         ok:
+          type: 'boolean'
+          example: false
+         message:
+          type: 'string'
+          example: 'Error, Invalid Token'
+  post:
+   tags:
+    - 'Administrators'
+   summary: 'Create a new product'
+   description: 'Create a new product in database'
+   requestBody:
+    content:
+     application/json:
+      schema:
+       type: 'object'
+       properties:
+        name:
+         type: 'string'
+         example: 'Hot Dog'
+        description:
+         type: 'string'
+         example: 'Hot dog with all toppings'
+        photo_url:
+         type: 'string'
+         example: 'https://hotDog.com/hotDog.jpg'
+        price:
+         type: 'number'
+         example: 10.5
+        available:
+         type: 'boolean'
+         example: true
+    required: true
+   responses:
+    '201':
+     description: 'Product created successfully'
+     content:
+      aplication/json:
+       schema:
+        type: 'object'
+        properties:
+         ok:
+          type: 'boolean'
+          example: true
+         message:
+          type: 'string'
+          example: 'Product created successfully'
+         data:
+          $ref: '#/components/schemas/Products'
+    '400':
+     description: 'Missing data'
+     content:
+      application/json:
+       schema:
+        $ref: '#/components/schemas/400Error'
+    '401':
+     description: 'Invalid Token'
+     content:
+      application/json:
+       schema:
+        $ref: '#/components/schemas/401Error'
+    '403':
+     description: 'Only an admin user can add products'
+     content:
+      application/json:
+       schema:
+        type: 'object'
+        properties:
+         ok:
+          type: 'boolean'
+          example: false
+         message:
+          type: 'string'
+          example: 'Error, only an admin user can add products'
+ /products/{id}:
+  get:
+   tags:
+    - 'Customers'
+   summary: 'Returns an specific product'
+   description: 'Returns anl specific product'
+   parameters:
+    - name: 'id'
+      in: 'path'
+      description: 'Product ID you want to search.'
+      required: true
+      style: 'simple'
+      explode: false
+      schema:
+       type: 'integer'
+   responses:
+    '200':
+     description: 'Successful request'
+     content:
+      aplication/json:
+       schema:
+        type: 'object'
+        properties:
+         ok:
+          type: 'boolean'
+          example: true
+         message:
+          type: 'string'
+          example: 'Successful request'
+         data:
+          $ref: '#/components/schemas/Products'
+    '401':
+     description: 'Invalid Token'
+     content:
+      aplication/json:
+       schema:
+        $ref: '#/components/schemas/401Error'
+    '404':
+     description: 'Not found'
+     content:
+      aplication/json:
+       schema:
+        $ref: '#/components/schemas/404Error'
+  put:
+   tags:
+    - 'Administrators'
+   summary: 'Modify a specific product'
+   description: 'Modify a specific product'
+   parameters:
+    - name: 'id'
+      in: 'path'
+      description: 'Product ID you want to modify.'
+      required: true
+      style: 'simple'
+      explode: false
+      schema:
+       type: 'integer'
+   requestBody:
+    content:
+     application/json:
+      schema:
+       type: 'object'
+       properties:
+        name:
+         type: 'string'
+         example: 'Hot Dog'
+        description:
+         type: 'string'
+         example: 'Hot dog with all toppings'
+        photo_url:
+         type: 'string'
+         example: 'https://hotDog.com/hotDog.jpg'
+        price:
+         type: 'number'
+         example: 10.5
+        available:
+         type: 'boolean'
+         example: true
+    required: true
+   responses:
+    '200':
+     description: 'Successful request'
+     content:
+      aplication/json:
+       schema:
+        type: 'object'
+        properties:
+         ok:
+          type: 'boolean'
+          example: true
+         message:
+          type: 'string'
+          example: 'successful change'
+         data:
+          $ref: '#/components/schemas/Products'
+    '400':
+     description: 'Missing data'
+     content:
+      aplication/json:
+       schema:
+        $ref: '#/components/schemas/400Error'
+    '401':
+     description: 'Invalid Token'
+     content:
+      aplication/json:
+       schema:
+        $ref: '#/components/schemas/401Error'
+    '403':
+     description: 'Only an admin user can do this'
+     content:
+      aplication/json:
+       schema:
+        $ref: '#/components/schemas/403Error'
+    '404':
+     description: 'Not found'
+     content:
+      aplication/json:
+       schema:
+        $ref: '#/components/schemas/404Error'
+  delete:
+   tags:
+    - 'Administrators'
+   summary: 'Delete a specific product'
+   description: 'Delete a specific product'
+   parameters:
+    - name: 'id'
+      in: 'path'
+      description: 'Product ID you want to delete.'
+      required: true
+      style: 'simple'
+      explode: false
+      schema:
+       type: 'integer'
+   responses:
+    '200':
+     description: 'Successful request'
+     content:
+      aplication/json:
+       schema:
+        type: 'object'
+        properties:
+         ok:
+          type: 'boolean'
+          example: true
+         message:
+          type: 'string'
+          example: 'Product deleted'
+    '401':
+     description: 'Invalid Token'
+     content:
+      aplication/json:
+       schema:
+        $ref: '#/components/schemas/401Error'
+    '403':
+     description: 'Only an admin user can do this'
+     content:
+      aplication/json:
+       schema:
+        $ref: '#/components/schemas/403Error'
+    '404':
+     description: 'Not found'
+     content:
+      aplication/json:
+       schema:
+        $ref: '#/components/schemas/404Error'
+ /users:
+  get:
+   tags:
+    - 'Administrators'
+   summary: 'Returns all users'
+   description: 'Returns all users from database'
+   responses:
+    '200':
+     description: 'Successful request'
+     content:
+      aplication/json:
+       schema:
+        type: 'object'
+        properties:
+         ok:
+          type: 'boolean'
+          example: true
+         message:
+          type: 'string'
+          example: 'Successful request'
+         data:
+          type: 'array'
+          items:
+           $ref: '#/components/schemas/Users'
+    '401':
+     description: 'Invalid Token'
+     content:
+      application/json:
+       schema:
+        type: 'object'
+        properties:
+         ok:
+          type: 'boolean'
+          example: false
+         message:
+          type: 'string'
+          example: 'Error, invalid Token'
+    '403':
+     description: 'Only an admin user can do this'
+     content:
+      application/json:
+       schema:
+        type: 'object'
+        properties:
+         ok:
+          type: 'boolean'
+          example: false
+         message:
+          type: 'string'
+          example: 'Error, only an admin user can do this'
+ /users/{id}:
+  get:
+   tags:
+    - 'Administrators'
+   summary: 'Returns a specific user'
+   description: 'Returns a specific user'
+   parameters:
+    - name: 'id'
+      in: 'path'
+      description: 'User ID you want to search.'
+      required: true
+      style: 'simple'
+      explode: false
+      schema:
+       type: 'integer'
+   responses:
+    '200':
+     description: 'Successful request'
+     content:
+      aplication/json:
+       schema:
+        type: 'object'
+        properties:
+         ok:
+          type: 'boolean'
+          example: true
+         message:
+          type: 'string'
+          example: 'Successful request'
+         data:
+          $ref: '#/components/schemas/Users'
+    '401':
+     description: 'Invalid Token'
+     content:
+      aplication/json:
+       schema:
+        $ref: '#/components/schemas/401Error'
+    '403':
+     description: 'Only an admin user can do this'
+     content:
+      aplication/json:
+       schema:
+        $ref: '#/components/schemas/403Error'
+    '404':
+     description: 'Not found'
+     content:
+      aplication/json:
+       schema:
+        $ref: '#/components/schemas/404Error'
+  put:
+   tags:
+    - 'Administrators'
+   summary: 'Modify a specific user'
+   description: 'Modify a specific user'
+   parameters:
+    - name: 'id'
+      in: 'path'
+      description: 'User ID you want to search.'
+      required: true
+      style: 'simple'
+      explode: false
+      schema:
+       type: 'integer'
+   requestBody:
+    content:
+     application/json:
+      schema:
+       type: 'object'
+       properties:
+        username:
+         type: 'string'
+         example: 'sebas123'
+        full_name:
+         type: 'string'
+         example: 'Sebastian Tamayo'
+        email:
+         type: 'string'
+         example: 'sebastiantamayogiraldo@gmail.com'
+        phone:
+         type: 'number'
+         example: 3168547896
+        shipping_address:
+         type: 'string'
+         example: '2025 E Street, NW Washington DC'
+        password:
+         type: 'string'
+         example: 'password123'
+        es_admin:
+         type: 'boolean'
+         example: false
+    required: true
+   responses:
+    '200':
+     description: 'Successful request'
+     content:
+      aplication/json:
+       schema:
+        type: 'object'
+        properties:
+         ok:
+          type: 'boolean'
+          example: true
+         message:
+          type: 'string'
+          example: 'successful change'
+         data:
+          $ref: '#/components/schemas/Users'
+    '400':
+     description: 'Missing data'
+     content:
+      aplication/json:
+       schema:
+        $ref: '#/components/schemas/400Error'
+    '401':
+     description: 'Invalid Token'
+     content:
+      aplication/json:
+       schema:
+        $ref: '#/components/schemas/401Error'
+    '403':
+     description: 'Only an admin user can do this'
+     content:
+      aplication/json:
+       schema:
+        $ref: '#/components/schemas/403Error'
+    '404':
+     description: 'Not found'
+     content:
+      aplication/json:
+       schema:
+        $ref: '#/components/schemas/404Error'
+  delete:
+   tags:
+    - 'Administrators'
+   summary: 'Delete a specific user'
+   description: 'Delete a specific user'
+   parameters:
+    - name: 'id'
+      in: 'path'
+      description: 'User ID you want to delete.'
+      required: true
+      style: 'simple'
+      explode: false
+      schema:
+       type: 'integer'
+   responses:
+    '200':
+     description: 'Successful request'
+     content:
+      aplication/json:
+       schema:
+        type: 'object'
+        properties:
+         ok:
+          type: 'boolean'
+          example: true
+         message:
+          type: 'string'
+          example: 'User deleted'
+    '401':
+     description: 'Invalid Token'
+     content:
+      aplication/json:
+       schema:
+        $ref: '#/components/schemas/401Error'
+    '403':
+     description: 'Only an admin user can do this'
+     content:
+      aplication/json:
+       schema:
+        $ref: '#/components/schemas/403Error'
+    '404':
+     description: 'Not found'
+     content:
+      aplication/json:
+       schema:
+        $ref: '#/components/schemas/404Error'
+ /orders:
+  get:
+   tags:
+    - 'Administrators'
+   summary: 'Returns all orders'
+   description: 'Returns all users from database'
+   responses:
+    '200':
+     description: 'Successful request'
+     content:
+      aplication/json:
+       schema:
+        type: 'object'
+        properties:
+         ok:
+          type: 'boolean'
+          example: true
+         message:
+          type: 'string'
+          example: 'Successful request'
+         data:
+          type: 'array'
+          items:
+           type: 'object'
+           properties:
+            order_id:
+             type: 'integer'
+             example: 1
+            user_id:
+             type: 'integer'
+             example: 1
+            total:
+             type: 'number'
+             example: 35
+            status:
+             type: 'string'
+             example: 'new'
+            payment_method:
+             type: 'string'
+             example: 'cash'
+            creation_date:
+             type: 'string'
+             format: 'date-time'
+             example: '2020-09-10T10:10:12Z'
+            username:
+             type: 'string'
+             example: 'sebas123'
+            full_name:
+             type: 'string'
+             example: 'Sebastian Tamayo'
+            email:
+             type: 'string'
+             example: 'sebastiantamayogiraldo@gmail.com'
+            phone:
+             type: 'integer'
+             example: 3168547896
+            shipping_address:
+             type: 'string'
+             example: '2025 E Street, NW Washington D'
+            products:
+             type: 'array'
+             items:
+              type: 'object'
+              properties:
+               order_product_id:
+                type: 'integer'
+                example: 1
+               order_id:
+                type: 'integer'
+                example: 1
+               product_id:
+                type: 'integer'
+                example: 1
+               quantity:
+                type: 'integer'
+                example: 2
+               name:
+                type: 'string'
+                example: 'hotdog'
+               description:
+                type: 'string'
+                example: 'best hotdog'
+               photo_url:
+                type: 'string'
+                example: 'https://hotDog.com/hotDog.jpg'
+               price:
+                type: 'number'
+                example: 1E+1
+               creation_date:
+                type: 'string'
+                format: 'date-time'
+                example: '2020-09-10T10:10:12Z'
+               available:
+                type: 'boolean'
+                example: true
+    '401':
+     description: 'Invalid Token'
+     content:
+      application/json:
+       schema:
+        type: 'object'
+        properties:
+         ok:
+          type: 'boolean'
+          example: false
+         message:
+          type: 'string'
+          example: 'Error, invalid Token'
+    '403':
+     description: 'Invalid payment method'
+     content:
+      application/json:
+       schema:
+        type: 'object'
+        properties:
+         ok:
+          type: 'boolean'
+          example: false
+         message:
+          type: 'string'
+          example: 'Error, only an admin user can do this'
+  post:
+   tags:
+    - 'Customers'
+   summary: 'Make a new order'
+   description: 'with this endpoint you can make a new order'
+   requestBody:
+    content:
+     application/json:
+      schema:
+       type: 'object'
+       properties:
+        payment_method:
+         type: 'string'
+         example: 'cash'
+        info_order:
+         type: 'array'
+         items:
+          type: 'object'
+          properties:
+           product_id:
+            type: 'integer'
+            example: 1
+           quantity:
+            type: 'integer'
+            example: 2
+    required: true
+   responses:
+    '200':
+     description: 'Generated order'
+     content:
+      application/json:
+       schema:
+        type: 'object'
+        properties:
+         ok:
+          type: 'boolean'
+          example: true
+         message:
+          type: 'string'
+          example: 'Generated order'
+    '400':
+     description: 'Missing_data'
+     content:
+      application/json:
+       schema:
+        type: 'object'
+        properties:
+         ok:
+          type: 'boolean'
+          example: false
+         message:
+          type: 'string'
+          example: 'Error, missing data'
+    '401':
+     description: 'Invalid Token'
+     content:
+      application/json:
+       schema:
+        type: 'object'
+        properties:
+         ok:
+          type: 'boolean'
+          example: false
+         message:
+          type: 'string'
+          example: 'Error, invalid Token'
+    '403':
+     description: 'Invalid payment method'
+     content:
+      application/json:
+       schema:
+        type: 'object'
+        properties:
+         ok:
+          type: 'boolean'
+          example: false
+         message:
+          type: 'string'
+          example: 'Error, invalid payment method'
+    '404':
+     description: 'Product not found'
+     content:
+      application/json:
+       schema:
+        type: 'object'
+        properties:
+         ok:
+          type: 'boolean'
+          example: false
+         message:
+          type: 'string'
+          example: 'Error, product not found'
+components:
+ schemas:
+  Products:
+   type: 'object'
+   properties:
+    product_id:
+     type: 'integer'
+     example: 1
+    name:
+     type: 'string'
+     example: 'Hot dog'
+    description:
+     type: 'string'
+     example: 'Hot dog with all toppings'
+    photo_url:
+     type: 'string'
+     example: 'https://hotDog.com/image.jpg'
+    price:
+     type: 'number'
+     example: 10.5
+    creation_date:
+     type: 'string'
+     format: 'date-time'
+     example: '2020-09-10T10:10:12Z'
+    available:
+     type: 'boolean'
+     example: true
+  Users:
+   type: 'object'
+   properties:
+    user_id:
+     type: 'integer'
+     example: 1
+    username:
+     type: 'string'
+     example: 'sebas123'
+    full_name:
+     type: 'string'
+     example: 'Sebastian Tamayo'
+    email:
+     type: 'string'
+     example: 'sebastiantamayogiraldo@gmail.com'
+    phone:
+     type: 'number'
+     example: 3168547896
+    shipping_address:
+     type: 'string'
+     example: '2025 E Street, NW Washington DC'
+    password:
+     type: 'string'
+     example: 'password123'
+    es_admin:
+     type: 'boolean'
+     example: false
+    creation_date:
+     type: 'string'
+     format: 'date-time'
+     example: '2020-09-10T10:10:12Z'
+  '400Error':
+   type: 'object'
+   properties:
+    ok:
+     type: 'boolean'
+     example: false
+    message:
+     type: 'string'
+     example: 'Error, missing data'
+  '401Error':
+   type: 'object'
+   properties:
+    ok:
+     type: 'boolean'
+     example: false
+    message:
+     type: 'string'
+     example: 'Error, invalid Token'
+  '403Error':
+   type: 'object'
+   properties:
+    ok:
+     type: 'boolean'
+     example: false
+    message:
+     type: 'string'
+     example: 'Error, only an admin user can do this'
+  '404Error':
+   type: 'object'
+   properties:
+    ok:
+     type: 'boolean'
+     example: false
+    message:
+     type: 'string'
+     example: 'Error, not found'
