@@ -36,6 +36,10 @@ Link to download: [Link](https://github.com/SETAGI/Delilah-Resto 'Link')
 
 `node server`
 
+#### 5. Open Postman and test the endpoints
+
+- Path required to test endpoints: `http://localhost:3000/'example'`
+
 ## Important:
 
 #### - Accepted payment method
@@ -59,10 +63,6 @@ Link to download: [Link](https://github.com/SETAGI/Delilah-Resto 'Link')
 #### - XAMPP (MySql) Port
 
 `3306`
-
-#### - Path required to test endpoints
-
-`http://localhost:3000/'example'`
 
 ---
 
