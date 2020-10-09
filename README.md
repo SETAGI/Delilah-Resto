@@ -13,7 +13,7 @@
 
 ## API documentation 📑
 
-You can find the API documentation in `delilah.yml`, you need to copy the content and paste it into the [swagger](https://app.swaggerhub.com/ 'swagger') editor or import the document to see the endpoints.
+You can find the API documentation in `DelilahRestoAPI-1.0.0.yaml`, you need to copy the content and paste it into the [swagger](https://app.swaggerhub.com/ 'swagger') editor or import the document to see the endpoints.
 
 ## Instalation guide 💻
 
