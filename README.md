@@ -1,6 +1,6 @@
 # Delilah Restó (Backend) 👨‍🍳
 
-## Technologies used:
+## Technologies 🤖
 
 - Node.js
 - Express
@@ -13,17 +13,59 @@
 
 ## API documentation 📑
 
-You can find the API documentation in the document `delilah.yml`, you need to copy the content and paste it into the [swagger](https://app.swaggerhub.com/ 'swagger') editor or import the document to see the endpoints.
+You can find the API documentation in `delilah.yml`, you need to copy the content and paste it into the [swagger](https://app.swaggerhub.com/ 'swagger') editor or import the document to see the endpoints.
 
 ## Instalation guide 💻
 
-#### 1. Download or clone the project
+#### 1. Download project
 
 Link to download: [Link](https://github.com/SETAGI/Delilah-Resto 'Link')
-Console option: `git clone https://github.com/SETAGI/Delilah-Resto.git`
 
 #### 2. installation of required packages
 
-review how i can better manage this point
-
 `npm install`
+
+#### 3. Database configuration 📥 📤
+
+- Download XAMPP and start apache and Mysql modules
+- Open next link: [phpMyAdmin](http://localhost/phpmyadmin/ 'phpMyAdmin')
+- Import the `delilaDB.sql` file from phpMyAdmin
+- You should have a new database called `delilahdb` with the table structure
+
+#### 4. Start the server
+
+`node server`
+
+## Important:
+
+#### - Accepted payment method
+
+    - cash
+    - card
+
+#### - Accepted order status
+
+    - new
+    - confirmed
+    - preparing
+    - sending
+    - cancelled
+    - delivered
+
+#### - Server Port
+
+`3000`
+
+#### - XAMPP (MySql) Port
+
+`3306`
+
+#### - Path required to test endpoints
+
+`http://localhost:3000/'example'`
+
+---
+
+---
+
+## The aplication is ready to use (let´s do it) 🚀

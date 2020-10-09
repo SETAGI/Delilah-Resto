@@ -1,7 +1,7 @@
-DROP DATABASE IF EXISTS delilahDB;
-CREATE DATABASE delilahDB;
+DROP DATABASE IF EXISTS delilahdb;
+CREATE DATABASE delilahdb;
 
-USE delilahDB;
+USE delilahdb;
 
 DROP TABLE IF EXISTS products;
 DROP TABLE IF EXISTS users;
