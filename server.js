@@ -8,6 +8,7 @@ const { middle } = require('./middlewares');
 const routes = require('./routes/routes');
 
 /* Settings */
+
 server.set('port', process.env.PORT || 3000);
 
 /* Middlewares */
@@ -22,4 +23,6 @@ server.use('/', routes);
 server.use(middle.error);
 
 /* Server */
-server.listen(server.get('port'), () => console.log('delilah server is on port 3000...'));
+server.listen(server.get('port'), () =>
+	console.log(`delilah server is on port ${server.get('port')}...`)
+);
